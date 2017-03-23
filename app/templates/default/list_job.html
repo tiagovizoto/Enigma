@@ -1,0 +1,86 @@
+    {% extends "default/base.html"%}
+
+        {% block body %}
+
+
+        <div class="container ">
+          <form action="/search" method="post">
+              <div class="col justify-content-center">
+
+                <div id="imaginary_container">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" class="form-control" name="pass_key"  placeholder="Search" >
+                        <span class="input-group-addon">
+                            <button type="submit">
+                                <span ><i class="fa fa-search "></i></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+              </div>
+          </form>
+        </div>
+
+
+        <div class="container">
+          <br>
+        <div class="row">
+          <div class="col col-sm-8">
+              {%for job in jobs %}
+            <div class="card">
+              <div class="card-block">
+                <a href="/job/{{job['_id']}}"><h5 class="card-title">{{job['job'].title}}</h5></a>
+                <small><strong>{{job['job'].salary.coin}} {{job['job'].salary.value}}</strong> {{job['job'].location}}</small>
+                <p class="card-text">{{job['job'].description}}</p>
+              </div>
+            </div>
+            {%endfor%}
+
+
+          </div>
+          <div class="col col-sm-4">
+            <div class="row">
+              <h4>Dê um Up</h4>
+              </div>
+            </div>
+            <div class="col col-sm-12 ">
+              <ul class="pagination justify-content-center">
+                  {% if numero > 0 %}
+                    <li class="page-item ">
+                      <a class="page-link" href="/page/{{numero-1}}" tabindex="-1">Previous</a>
+                    </li>
+                  {% else %}
+                   <li class="page-item disabled ">
+                      <a class="page-link" href="/page/0" tabindex="-1">Previous</a>
+                    </li>
+                  {% endif %}
+                  {% if pagination <= 5 and pagination >= 1 and numero > 0 %}
+                    {% for i in range(pagination) %}
+                        <li class="page-item"><a class="page-link" href="/page/{{ i }}">{{i}}</a></li>
+                    {% endfor %}
+                  {% elif  pagination > numero %}
+                    {% if (pagination-numero) >= 5%}
+                        {% for i in range(5) %}
+                        <li class="page-item"><a class="page-link" href="/page/{{ numero + i}}">{{i + numero}}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(pagination-numero) %}
+                        <li class="page-item"><a class="page-link" href="/page/{{ numero + i}}">{{i + numero}}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                  {% else %}
+
+                  {% endif %}
+
+                  {%if pagination > numero %}
+                <li class="page-item">
+                  <a class="page-link" href="/page/{{numero+1}}">Next</a>
+                </li>
+
+                  {% endif %}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+            {% endblock %}

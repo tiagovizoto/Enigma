@@ -1,0 +1,47 @@
+    {% extends "default/base.html"%}
+
+        {% block body %}
+         <div class="container ">
+          <form action="/search" method="post">
+              <div class="col justify-content-center">
+
+                <div id="imaginary_container">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" class="form-control" name="pass_key"  placeholder="Search" >
+                        <span class="input-group-addon">
+                            <button type="submit">
+                                <span ><i class="fa fa-search "></i></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+              </div>
+          </form>
+        </div>
+
+
+        <div class="container">
+          <br>
+        <div class="row">
+          <div class="col col-sm-8">
+              {%for job in jobs %}
+            <div class="card">
+              <div class="card-block">
+                <a href="/job/{{job['_id']}}"><h5 class="card-title">{{job.title}}</h5></a>
+                <small><strong>{{job.salary.value}}</strong>{{job.location}}</small>
+                <p class="card-text">{{job.description}}</p>
+              </div>
+            </div>
+            {%endfor%}
+
+
+          </div>
+          <div class="col col-sm-4">
+            <div class="row">
+              <h4>Dê um Up</h4>
+              </div>
+            </div>
+
+          </div>
+        </div>
+       {% endblock %}

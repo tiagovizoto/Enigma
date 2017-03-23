@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vaga</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='font/css/font-awesome.min.css')}}">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/bootstrap-grid.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/bootstrap.js')}}" charset="utf-8"></script>
+        <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+        <style media="screen">
+
+        *{
+            font-family: 'Slabo 27px', serif;
+        }
+        .card{
+          margin-bottom: 11px;
+          box-shadow: 0px 0px 3px #888888;
+        }
+        body{
+          background-color:  #f5f5f5;
+        }
+        .logo-enigma{
+          margin: -3px;
+        }
+        .navbar-nav{
+          font-weight: bold;
+        }
+        #imaginary_container{
+            margin-top:2%; /* Don't copy this */
+        }
+        .stylish-input-group .input-group-addon{
+            background: white !important;
+        }
+        .stylish-input-group .form-control{
+          border-right:0;
+          box-shadow:0 0 0;
+          border-color:#ccc;
+        }
+        .stylish-input-group button{
+            border:0;
+            background:transparent;
+        }
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+        body {
+          /* Margin bottom by footer height */
+          margin-bottom: 60px;
+        }
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          /* Set the fixed height of the footer here */
+          height: 60px;
+          line-height: 60px; /* Vertically center the text there */
+          background-color: black;
+        }
+
+
+
+
+
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-toggleable-md navbar-inverse  bg-inverse">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          <img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          <strong class="logo-enigma">nigma</strong>
+        </a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Empresa <span class="sr-only">(current)</span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+             <a class="dropdown-item" href="#">Nova Vaga</a>
+             <a class="dropdown-item" href="#">Login</a>
+             <a class="dropdown-item" href="#">Premium</a>
+           </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Candidato <span class="sr-only">(current)</span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+             <a class="dropdown-item" href="#">Cadastro</a>
+             <a class="dropdown-item" href="#">Login</a>
+           </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sobre</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#"></a>
+          </li>
+
+        </ul>
+
+        </div>
+
+        </nav>
+
+        {% raw %}
+        <div id="curriculum" class="container">
+          <br>
+          <div class="row">
+
+
+          <div class="col col-xl-9">
+            <div class="card">
+              <div class="card-block">
+
+            <h3>Cadastro de Curriculo</h3>
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" class="form-control"  v-model="newNome"><br>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+            <input type="text" class="form-control"  v-model="newemail"><br>
+            </div>
+            <div class="form-group">
+              <label>Celular</label>
+              <input type="text" class="form-control"  v-model="newcelular"><br>
+            </div>
+            <div class="form-group">
+              <label>Cidade/Estado</label>
+              <input type="text" class="form-control"  v-model="newlocalicao"><br>
+            </div>
+            <div class="form-group">
+              <label>Data de Nascimento</label>
+            <input type="date" class="form-control"  v-model="newdata_nascimento"><br>
+            </div>
+
+            <div class="form-group">
+              <h5>Resumo</h5>
+              <textarea class="form-control"  v-model="newresumo"></textarea><br>
+            </div>
+            <br>
+            <h4>Experiência</h4>
+            <div class="card">
+              <ul class="list-group list-group-flush"  v-for="(i,index) in experiencia">
+                <li style="font-size:20px" class="list-group-item"><strong>{{index}}</strong> -- {{i.cargo}} na {{i.empresa}} Inicio: {{i.inicio_xp}} Terminio: {{i.termino_xp}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn-danger btn btn-sm"  v-on:click="removeXP(index)" name="button">Delete</button></li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <label for=""> Empresa</label>
+              <input type="text" v-model="newNomeEmpresa" class="form-control" name="" value="">
+              <label for="">Cargo</label>
+              <input type="text" class="form-control" v-model="newCargo" >
+              <div class="row">
+                <div class="col col-sm-4">
+                  <label for="">Entrada</label>
+                  <input type="date" class="form-control" v-model="newDataInicioXP"   name="" value="">
+                </div>
+                <div class="col col-sm-4">
+                  <label for="">Saída</label>
+                  <input type="date" class="form-control" v-model="newDataTerminoXP" value="">
+                </div>
+                </div>
+                <div class="form-group">
+                  <label for="">Descrição</label>
+                  <textarea name="name"  v-model="newDescricacao" class="form-control" rows="8" cols="80"></textarea>
+                </div>
+                <button type="button" class="btn btn-dark btn-sm" v-on:click="adicionarXP" name="button">Adicionar Experiência</button>
+              </div>
+
+                  <h3>Educação</h3>
+                  <div class="card">
+                    <ul  class="list-group list-group-flush" v-for="(edu, index) in educacao">
+                      <li  class="list-group-item">{{edu.curso}} na {{edu.nome}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" v-on:click="removeEdu(index)" class="btn btn-danger btn-sm" name="button">Delete</button></li>
+                    </ul>
+                  </div>
+                  <div class="form-group">
+                  <label for="">Institruição de Ensino</label>
+                  <input class="form-control" type="text" v-model="nomeEnsino" name="" value=""><br>
+                  </div>
+                  <div class="form-group">
+                  <label for="">Curso</label>
+                  <input class="form-control" type="text" v-model="newNomeCurso" name="" value=""><br>
+                  </div>
+                  <div class="form-group">
+                  <label for="">Inicio</label>
+                  <input type="date" class="form-control" v-model="newDataInicio" name="" value=""><br>
+                  </div>
+                  <div class="form-group">
+                  <label for="">Termino</label>
+                  <input type="date" class="form-control" v-model="newDataTermino" name="" value=""><br>
+                  </div>
+                  <div class="form-group">
+                  <button type="button" class="btn btn-dark btn-sm"  v-on:click="adicionaEducacao" name="button">Adicionar curso</button>
+                  </div>
+                  <br><br>
+                  <button type="button" v-on:click="sendCurriculum" class="btn btn-success" id="button" name="button">Cadastrar Curriculo</button>
+
+
+              </div>
+            </div>
+            </div>
+          </div>
+            {% endraw %}
+        </div>
+        <br>
+        <footer class="footer">
+          <div class="container">
+            <span class="text-muted">Enigma Job 2016-2017</span>
+          </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    </body>
+    <script type="text/javascript">
+      var app = new Vue({
+        el : '#curriculum',
+        data:{
+          newNome:'',
+          newemail:'',
+          newcelular:'',
+          newlocalicao:'',
+          newdata_nascimento:'',
+          newtecnologia:'',
+          newresumo:'',
+
+          newNomeEmpresa:'',
+          newCargo:'',
+          newDescricacao:'',
+          newDataInicioXP:'',
+          newDataTerminoXP:'',
+
+          nomeEnsino:'',
+          newNomeCurso:'',
+          newDataInicio:'',
+          newDataTermino:'',
+          experiencia:[],
+          educacao:[],
+          curriculum:[]
+        },
+        methods:{
+          adicionaCurriculum: function(){
+            this.curriculum.push({nome:this.newNome,
+            email:this.newemail,
+            celular:this.newcelular,
+            localicao:this.newlocalicao,
+            data_nascimento:this.newdata_nascimento,
+            tecnologia:this.newtecnologia,
+            resumo:this.newresumo
+            })
+            this.newNome = ''
+            this.newcelular = ''
+            this.newlocalicao = ''
+            this.newdata_nascimento = ''
+            this.newtecnologia = ''
+            this.newresumo = ''
+          },
+          adicionaEducacao: function(){
+            this.educacao.push({nome:this.nomeEnsino,curso:this.newNomeCurso,inicio:this.newDataInicio,termino:this.newDataTermino})
+            this.nomeEnsino = ""
+            this.newNomeCurso =""
+            this.newDataInicio =""
+            this.newDataTermino= ""
+          },
+          adicionarXP: function(){
+            this.experiencia.push({empresa:this.newNomeEmpresa ,cargo:this.newCargo , inicio_xp:this.newDataInicioXP , termino_xp:this.newDataTerminoXP ,descricao:this.newDescricacao  })
+            this.newNomeEmpresa = ""
+            this.newCargo = ""
+            this.newDataInicioXP =""
+            this.newDataTerminoXP =""
+            this.newDescricacao =""
+          },
+          removeEdu: function(index) {
+            this.educacao.splice(index,1)
+          },
+          removeXP: function(index){
+            this.experiencia.splice(index, 1)
+          },
+          sendCurriculum: function () {
+            axios.post('/adicionar_curriculum', {curriculum:this.curriculum, experiencia:this.experiencia, educacao:this.educacao})
+            .then(function(response){
+              console.log('saved successfully')
+            })
+          },
+
+        }
+      });
+
+    </script>
+</html>

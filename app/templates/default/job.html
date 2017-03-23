@@ -1,0 +1,136 @@
+        {% extends "default/base.html"%}
+
+        {% block body %}
+        <div class="container" xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+
+        <div class="col col-xl-8">
+               <div class="card ">
+                 <div class="card-block">
+                    <h1 class="card-title">{{resultado['job'].title}} -- {{resultado['job'].business.name}}</h1>
+                    <p class="card-subtitle mb-2 text-muted">
+                        <span class="badge badge-default">{{resultado['job'].salary.coin}} {{resultado['job'].salary.value}}</span>
+
+                        <span class="badge badge-default">{{resultado['job'].location}}</span>
+                    </p>
+                    <br>
+
+                    <p class="card-text" align="justify">
+                        <p class="">
+                            <b>Descricão:</b>
+                        </p>
+                        {{resultado['job'].description}}
+                        <br><br>
+                        <p><b>Requisitos:</b></p>
+                        <ul>
+                           {% for i in resultado['job']['requirements'] %}
+                            <li>{{i.requirement}}</li>
+                            {% endfor %}
+                        </ul>
+                 </p>
+                     {% if resultado['job'].link == "" %}
+                    <div class="">
+                        <button type="button" data-toggle="modal" data-target="#exampleModal"  class="btn btn-dark">Candidatar</button>
+                    </div>
+                     {% else %}
+                     <div class="">
+                        <a type="button" href="{{resultado['job'].link}}" class="btn btn-dark">Candidatar</a>
+                    </div>
+                     {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col">
+                <h5 align="center">Vagas Recomendas</h5>
+                <br>
+                <a href="#"><h6>Programmer Python</h6></a>
+                <p>
+                  <small><em>$2K - $3 / São Paulo - SP </em></small><br>
+                  Curabitur et convallis sed.Curabitur et convallis sed.Curabitur et
+                </p>
+                <br>
+                <a href="#"><h6>Programmer Python</h6></a>
+                <p>
+                  <small><em>$2K - $3 / São Paulo - SP </em></small><br>
+                  Curabitur et convallis sed.Curabitur et convallis sed.Curabitur et
+                </p>
+                <br>
+                <a href="#"><h6>Programmer Python</h6></a>
+                <p>
+                  <small><em>$2K - $3 / São Paulo - SP </em></small><br>
+                  Curabitur et convallis sed.Curabitur et convallis sed.Curabitur et
+                </p>
+                 </div>
+               </div>
+              </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enviar curriculo para {{resultado.title}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/upload" method="POST"  enctype=multipart/form-data>
+                      <div class="form-group">
+                        <label for="recipient-email" class="form-control-label">Email:</label>
+                        <input type="email" required class="form-control" name="email">
+                      </div>
+                        <div class="form-group">
+                        <label for="recipient-nome" class="form-control-label">Nome:</label>
+                        <input type="text" required class="form-control" name="name">
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="form-control-label">Messagem:</label>
+                        <textarea class="form-control" name="msg"></textarea>
+                        <input type="hidden" name="id_job" required value="{{resultado['_id']}}">
+                        <input type="hidden" name="title_job" required value="{{resultado['job'].title}}">
+                      </div>
+                        <div class="form-group">
+                            <h4>Dicas</h4>
+                            <ul>
+                                <li>Não envie o curriculo com CPF e/ou RG </li>
+                                <li>Não envie o curriculo com seu endereço completo</li>
+                                <li>Desconfie dos empresas que solicitam algum tipo de pagamento</li>
+                            </ul>
+                        </div>
+                       <div class="form-group">
+                        <label >Currículo</label>
+                        <input type="file" name="file" class="form-control-file" required  aria-describedby="fileHelp">
+                        <small id="fileHelp" class="form-text text-muted">Somente é aceito arquivos ODT, PDF, DOC e DOCX</small>
+                      </div>
+                        <label class="custom-control custom-checkbox">
+                          <input required type="checkbox" class="custom-control-input">
+                          <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Eu aceito os termos da <a href="/politica" target="_blank" >Política de privacidade</a></span>
+                        </label>
+                        <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-dark">Enviar</button>
+                     </div>
+                  </div>
+                    </form>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#exampleModal').on('show.bs.modal', function (event) {
+                  var button = $(event.relatedTarget)
+                  var recipient = button.data({{resultado.title}})
+                  var modal = $(this)
+                  modal.find('.modal-title').text('{{resultado.title}}')
+                  modal.find('.modal-body input').val(recipient)
+                })
+
+            </script>
+
+
+        {% endblock %}
+

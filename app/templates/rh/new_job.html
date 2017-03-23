@@ -1,0 +1,183 @@
+
+  {% extends "default/base.html"%}
+
+        {% block body %}
+
+        {% raw %}
+        <br>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
+
+        <div class="container" id="vaga">
+
+            <form class="">
+              <div class="row">
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('title')  }" class="col col-xl-12">
+                  <label for="">Titulo</label>
+                  <input v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('title') }"  required class="form-control" v-model="job.title" type="text" name="title" value="">
+                  <span v-show="errors.has('title')" class="form-control-feedback">{{ errors.first('title') }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('location')  }" class="col col-xl-6">
+                  <label for="">Localização</label>
+                  <input v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('location') }"  required class="form-control" v-model="job.location" type="text" name="location" value="">
+                  <span v-show="errors.has('location')" class="form-control-feedback">{{ errors.first('location') }}</span>
+                </div>
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('business')  }" class="col col-xl-6">
+                  <label for="">Nome da Empresa </label>
+                  <input v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('business') }"  required class="form-control" v-model="job.business.name" type="text" name="business" value="">
+                  <span v-show="errors.has('business')" class="form-control-feedback">{{ errors.first('business') }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div  :class="{ 'form-group': true, 'form-group has-danger': errors.has('email')  }" class="col col-xl-6">
+                  <label for="">Seu email</label>
+                  <input v-validate="'required|email'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('email') }" required class="form-control" v-model="job.business.email" type="email" name="email" value="">
+                  <span v-show="errors.has('email')" class="form-control-feedback">{{ errors.first('email') }}</span>
+                </div>
+
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('linkjob')  }" class="col col-xl-6">
+                  <label for="">Link da Vaga </label>
+                  <input v-validate="'url'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('linkjob') }"   class="form-control" type="text" v-model="job.linkjob" name="linkjob" value="">
+                  <span v-show="errors.has('linkjob')" class="form-control-feedback">{{ errors.first('linkjob') }}</span>
+                  <small class="form-text text-muted"> É opcional. Você não receberá currículos no seu email caso preencha este campo </small>
+                </div>
+              </div>
+              <div class="row">
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('date_valid')  }" class="col col-xl-3">
+                  <label for="">Data de Expiração</label>
+                  <input class="form-control" required type="date" v-model="job.date_valid" name="date_valid" value="">
+                  <span v-show="errors.has('date_valid')" class="form-control-feedback">{{ errors.first('date_valid') }}</span>
+                </div>
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('coin')  }" class="col col-xl-3">
+                  <label for="">Moeda</label>
+                  <select v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('coin') }"  required name="coin" v-model="job.salary.coin" class="form-control" id="">
+                    <option>R$ BRL</option>
+                    <option>BTC/USD</option>
+                    <option>BTC/BRL</option>
+                    <option>EUR</option>
+                  </select>
+                  <span v-show="errors.has('coin')" class="form-control-feedback">{{ errors.first('coin') }}</span>
+                </div>
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('period_pay')  }" class="col col-xl-3">
+                  <label for="">Pagamento por</label>
+                  <select v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('period_pay') }"  required name="period_pay" v-model="job.salary.period_pay" class="form-control" id="exampleSelect1">
+                    <option>Mês</option>
+                    <option>Hora</option>
+                    <option>Anual</option>
+                    <option>Semanal</option>
+                  </select>
+                  <span v-show="errors.has('period_pay')" class="form-control-feedback">{{ errors.first('period_pay') }}</span>
+                </div>
+
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('salary')  }" class="col col-xl-3">
+                  <label for="">Salarío</label>
+                  <select v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('salary') }"  required name="salary" class="form-control" v-model="job.salary.value" id="exampleSelect1">
+                    <option>&lt 1000</option>
+                    <option>1000 - 1500</option>
+                    <option>1500 - 2000</option>
+                    <option>2000 - 3000</option>
+                    <option>3000 - 4000</option>
+                    <option> &gt 4000</option>
+                  </select>
+                  <span v-show="errors.has('salary')" class="form-control-feedback">{{ errors.first('salary') }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('description')  }" class="col col-xl-12">
+                  <label for="">Descrição da Vaga</label>
+                  <textarea v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('description') }"  required class="form-control" v-model="job.description" name="description" rows="8" cols="80"></textarea>
+                  <span v-show="errors.has('description')" class="form-control-feedback">{{ errors.first('description') }}</span>
+                </div>
+              </div>
+              <br><br>
+              <h3>Requisitos da Vaga</h3>
+              <div class="card">
+                    <ul  class="list-group list-group-flush" v-for="(requirement, index) in job.requirements">
+                      <li  class="list-group-item">{{requirement.requirement}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" v-on:click="removeRequirement(index)" class="btn btn-danger btn-sm" name="button">Delete</button></li>
+                    </ul>
+              </div>
+              <div class="">
+                <div class="form-group">
+
+                  <input type="text" v-model="newRequirement" placeholder="Digite o requisito" class="form-control"/>
+                  <button type="button" @click="addRequirement" class="btn btn-primary">Adicionar requisito</button>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                
+                <div class="col col-xl-12">
+                  <p>
+                    <button :disabled="!fields.valid()" class="btn btn-success" @click="sendJob" type="submit">Publicar</button>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+          {% endraw %}
+        </div>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="{{url_for('static', filename='js/vee-validate.js')}}" charset="utf-8"></script>
+        <script>
+            Vue.use(VeeValidate);
+            var app = new Vue({
+            el: '#vaga',
+            data:{
+                newRequirement:'',
+                job:{
+                  title: '',
+                  location: '',
+                  description: '',
+                  business: {
+                      name:'',
+                      email:'',
+                  },
+                  salary: {
+                      value: '',
+                      coin: '',
+                      period_pay: ''
+                  },
+                  date_valid:'',
+                  date_post: Date.now(),
+                  link: '',
+                  requirements:[]
+                },
+
+            },
+            methods:{
+                 addRequirement: function(){
+                  if (this.newRequirement!==''){
+                    this.job.requirements.push({requirement:this.newRequirement })
+                    this.newRequirement = ''
+                  }
+                },
+                removeRequirement: function(index) {
+                  this.job.requirements.splice(index,1)
+                },
+
+                sendJob: function(){
+
+                  axios.post('/job/add2', {job:this.job})
+                    .then(function(response){
+                    console.log('saved successfully')
+
+                    if(response.statusText=='OK'){
+                       window.location = '/job/'+response.data.id
+                    }else{
+                     alert("Falha ao publicar a vaga")
+                    }
+
+
+                  }).catch(function (err) {
+                       err.message
+                      alert(err.message)
+                    })
+                },
+            },
+            });
+        </script>
+
+   {% endblock %}

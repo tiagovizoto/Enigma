@@ -1,0 +1,8 @@
+MONGODB_URL = ""
+MONGODB_PORT = 3000
+MONGODB_PASSWORD = ""
+KEY_SENDMAIL = ""
+SECRET_KEY = ""
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = set(['docx', 'pdf', 'doc', 'odt'])
+DEBUG=True

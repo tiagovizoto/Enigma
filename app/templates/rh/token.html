@@ -1,0 +1,44 @@
+    {% extends "default/base.html"%}
+
+        {% block body %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<div class="container">
+      <div class="row justify-content-md-center">
+            <div class="col col-xl-6">
+                <h2>Novo Token</h2>
+                <form class="" action="/new_token" method="post">
+                  <div class="form-group">
+                    <input type="email" class="form-control" required name="email" placeholder="seunome@email.com" value="">
+                    <br>
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" name="button">Criar Token</button>
+                  </div>
+
+                </form>
+                <h2>Login com Token</h2>
+                <form class="" action="/rh/" method="post">
+                  <div class="form-group">
+                    <input type="text" class="form-control" required name="token" placeholder="A3f43hR451" value="">
+                    <br>
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" name="button">Acessar</button>
+                  </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+            <script type="text/javascript">
+        <!--
+
+        $(document).ready(function () {
+
+        window.setTimeout(function() {
+            $(".alert").fadeTo(1500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 5000);
+
+        });
+        //-->
+        </script>
+     {% endblock %}

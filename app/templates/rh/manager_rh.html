@@ -1,0 +1,76 @@
+    {% extends "default/base.html"%}
+
+        {% block body %}
+
+    <div class="container ">
+        <div class="col justify-content-center">
+            <div id="imaginary_container">
+                <div class="input-group stylish-input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-addon">
+                          <button type="submit">
+                              <span ><i class="fa fa-search "></i></span>
+                    </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col col-xl-8">
+                {% if vagas.count() == 0 %}
+
+                <div class="card">
+                    <h4 align="center" class="card-title">Como assim você não publicou nenhuma vaga???</h4>
+                    <img src="{{url_for('static', filename='img/redpanda2.jpeg')}}">
+                </div>
+                {% else %}
+                {% for vaga in vagas %}
+
+                <div class="card">
+                    <div class="card-block">
+                        <a href="/job/{{vaga._id}}">
+                            <h5 class="card-title">{{ vaga.job.title }}</h5>
+                        </a>
+                        <small><strong>{{ vaga.job.salary.coin }} {{ vaga.job.salary.value }}</strong> {{ vaga.job.location }}</small>
+                        <p class="card-text">{{ vaga.job.description }}</p>
+                        {% if vaga.candidaty %}
+                        <p class="card-text"> Total de Candidatos: {{vaga.candidaty|length}}</p>
+                        {% endif%}
+                        <a type="button" href="/rh/job/{{vaga._id}}/delete" class="btn btn-danger">Apagar</a>
+
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col col-xl-4">
+              <div class="card ">
+                <div class="card-block" >
+                  <p>
+                    <a style="font-size:20px" href="/rh/">Minhas Vagas</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="#">Buscar Currriculo</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="#">Meu Perfil</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/rh/job/new">Nova Vaga</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/logout">Sair</a>
+                  </p>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+     {% endblock %}
