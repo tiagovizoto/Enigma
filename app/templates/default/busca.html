@@ -27,9 +27,9 @@
               {%for job in jobs %}
             <div class="card">
               <div class="card-block">
-                <a href="/job/{{job['_id']}}"><h5 class="card-title">{{job.title}}</h5></a>
-                <small><strong>{{job.salary.value}}</strong>{{job.location}}</small>
-                <p class="card-text">{{job.description}}</p>
+                <a href="/job/{{job['_id']}}"><h5 class="card-title">{{job.job.title}}</h5></a>
+                <small><strong>{{job.job.salary.value}}</strong>{{job.job.location}}</small>
+                <p class="card-text">{{job.job.description}}</p>
               </div>
             </div>
             {%endfor%}

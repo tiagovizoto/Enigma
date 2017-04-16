@@ -24,7 +24,8 @@
 
         <div class="container">
           <br>
-        <div class="row">
+
+        <div class="">
           <div class="col col-sm-8">
               {%for job in jobs %}
             <div class="card">
@@ -39,10 +40,7 @@
 
           </div>
           <div class="col col-sm-4">
-            <div class="row">
-              <h4>Dê um Up</h4>
-              </div>
-            </div>
+             <div class="row">
             <div class="col col-sm-12 ">
               <ul class="pagination justify-content-center">
                   {% if numero > 0 %}
@@ -54,17 +52,17 @@
                       <a class="page-link" href="/page/0" tabindex="-1">Previous</a>
                     </li>
                   {% endif %}
-                  {% if pagination <= 5 and pagination >= 1 and numero > 0 %}
-                    {% for i in range(pagination) %}
+                  {% if pagination <= 5 and pagination >= 0 and numero > 0 %}
+                    {% for i in range(pagination+1) %}
                         <li class="page-item"><a class="page-link" href="/page/{{ i }}">{{i}}</a></li>
                     {% endfor %}
                   {% elif  pagination > numero %}
                     {% if (pagination-numero) >= 5%}
-                        {% for i in range(5) %}
+                        {% for i in range(6) %}
                         <li class="page-item"><a class="page-link" href="/page/{{ numero + i}}">{{i + numero}}</a></li>
                         {% endfor %}
                     {% else %}
-                        {% for i in range(pagination-numero) %}
+                        {% for i in range((pagination-numero)+1) %}
                         <li class="page-item"><a class="page-link" href="/page/{{ numero + i}}">{{i + numero}}</a></li>
                         {% endfor %}
                     {% endif %}
@@ -80,7 +78,12 @@
                   {% endif %}
               </ul>
             </div>
-
+             </div>
+            <div class="col col-sm-4">
+              <h4>Dê um Up</h4>
+              </div>
+            </div>
           </div>
+        </div>
         </div>
             {% endblock %}

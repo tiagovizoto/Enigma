@@ -67,6 +67,9 @@ class Rh:
         except Exception as e:
             return e
 
+    def search_profile(self, email):
+        return self.db_rh.find_one({'email':email})
+
     def my_profile(self, id):
         return self.db_rh.find_one({'_id': bson.ObjectId(id)})
 
@@ -74,4 +77,4 @@ class Rh:
         return self.db_rh.insert_one(profile)
 
     def update_profile(self, id_rh,profile):
-        return self.db_rh.update({u'_id': bson.ObjectId(id_rh)},{'$set':{profile}})
+        return self.db_rh.update_one({u'_id': bson.ObjectId(id_rh)},{'$set':profile})

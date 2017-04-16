@@ -51,6 +51,7 @@ class Job:
 
     def search_jobs(self, pass_key):
         """
+        db.jobs.createIndex({"job.title":"text", "job.location":"text","job.description":"text","job.business.name":1,"job.requirements":1})
         Metodo usado para busca de vagas
         :param pass_key:
         :return:
@@ -58,8 +59,8 @@ class Job:
         try:
             a = self.db.find({'$text': {'$search': pass_key}})
             return a
-        except:
-            return 'Sorry'
+        except Exception as e:
+            return e
 
     def find_email_bussniss(self, id_job):
         """

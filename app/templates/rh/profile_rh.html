@@ -1,0 +1,111 @@
+{% extends "default/base.html"%}
+{%block dados %}
+        <title>Cadastro gratuito de Candidatos e Empresas no  EnigmaJOB</title>
+        <meta property="og:locale" content="pt_BR">
+        <meta name="description" content="Cadastro gratuito de Candidatos e Empresas no EnigmaJob">
+        <meta name="keywords" content="mecanismo de busca de empregos, buscar vagas de emprego, oportunidades de emprego, lista de emprego, trabalho, vagas de trabaho, oportunidades de trabalho, vagas">
+        <meta property="og:title" content="Cadastro gratuito de Candidatos e Empresas no Enigmajob">
+        <meta property="og:site_name" content="EnigmaJOB">
+        <meta property="og:description" content="Cadastro gratuito de Candidatos e Empresas no EnigmaJob">
+        <meta property="og:type" content="website">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        {% endblock %}
+{% block body %}
+
+<div class="container">
+
+            <div class="row">
+            {% if not profile_my %}
+            <div class="col col-xl-8">
+            <div class="card">
+              <div class="card-block">
+                <h1>Cadastro de Perfil</h1>
+                <form action="/rh/profile/" method="post">
+                  <div class="form-group">
+                    <label for="">Nome da Empresa</label>
+                    <input name="name_business" type="text" required class="form-control" placeholder="Enigma Job S.A.">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Localização</label>
+                    <input name="location" type="text" required class="form-control" placeholder="Cidade - PR">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Site da Empresa</label>
+                    <input name="website_business" type="text" required class="form-control" placeholder="www.enigmajob.xyz">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Descrição</label>
+                    <input type="text" name="description" required class="form-control" placeholder="Somos uma empresa focada em soluções">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Seu Nome</label>
+                    <input name="name_pearson" type="text" required class="form-control" placeholder="Maria">
+                  </div>
+                   <input type="hidden" name="email" value="{{email}}">
+                  <button type="submit" class="btn btn-primary">Salvar</button>
+
+                </form>
+              </div>
+            </div>
+            </div>
+            {% else %}
+          <div class="col col-xl-8">
+            <div class="card">
+              <div class="card-block">
+                <h2>Meu Perfil</h2>
+                <p>
+                  <strong>Nome da empresa: </strong> {{profile_my.name_business}}
+                </p>
+                <p>
+                  <strong>Localização: </strong> {{profile_my.location}}
+                </p>
+                <p>
+                  <strong>Descrição: </strong> {{profile_my.description}}
+                </p>
+                <p>
+                  <strong>Responsavel pelo perfil: </strong> {{profile_my.name_pearson}}
+                </p>
+                <p>
+                  <strong>Site: </strong>   {{profile_my.website_business}}
+                </p>
+                <p>
+                  <strong>Meu email: </strong> {{profile_my.email}}
+                </p>
+
+                <a class="btn btn-success" href="/rh/profile/edit/{{profile_my._id}}" name="button">Editar</a>
+              </div>
+            </div>
+          </div>
+            {% endif %}
+
+
+            <aside role="complementary" class="col-xl-4">
+              <div class="card ">
+                <div class="card-block" >
+                  <p>
+                    <a style="font-size:20px" href="/rh/">Minhas Vagas</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="#">Buscar Currriculo</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/rh/profile/">Meu Perfil</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/rh/job/new">Nova Vaga</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/logout">Sair</a>
+                  </p>
+                </div>
+              </div>
+            </aside>
+            </div>
+            </div>
+            </div>
+          <br>
+
+
+{% endblock %}

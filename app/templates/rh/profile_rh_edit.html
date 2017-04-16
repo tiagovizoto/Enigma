@@ -1,0 +1,60 @@
+{% extends "default/base.html"%}
+{% block body %}
+        <div class="container">
+          <div class="row">
+          <div class="col col-xl-8">
+            <div class="card">
+              <div class="card-block">
+                <h1>Cadastro de Perfil</h1>
+                <form action="/rh/profile/edit/{{profile_my._id}}" method="post">
+                  <div class="form-group">
+                    <label for="">Nome da Empresa</label>
+                    <input name="name_business" value="{{profile_my.name_business}}" type="text" required class="form-control" placeholder="Enigma Job S.A.">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Localização</label>
+                    <input name="location" type="text" value="{{profile_my.location}}" required class="form-control" placeholder="Cidade - PR">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Site da Empresa</label>
+                    <input name="website_business" value="{{profile_my.website_business}}" type="text" required class="form-control" placeholder="www.enigmajob.xyz">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Descrição</label>
+                    <input type="text" value="{{profile_my.description}}" name="description" required class="form-control" placeholder="Somos uma empresa focada em soluções">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Seu Nome</label>
+                    <input name="name_pearson" type="text" value="{{profile_my.name_pearson}}" required class="form-control" placeholder="Maria">
+                  </div>
+                   <input type="hidden" name="email" value="{{profile_my.email}}">
+                  <button type="submit" class="btn btn-primary">Salvar</button>
+
+                </form>
+              </div>
+            </div>
+            </div>
+            <aside role="complementary" class="col-xl-4">
+              <div class="card ">
+                <div class="card-block" >
+                  <p>
+                    <a style="font-size:20px" href="/rh/">Minhas Vagas</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="#">Buscar Currriculo</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/rh/profile/">Meu Perfil</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/rh/job/new">Nova Vaga</a>
+                  </p>
+                  <p>
+                    <a style="font-size:20px" href="/logout">Sair</a>
+                  </p>
+                </div>
+              </div>
+            </aside>
+            </div>
+          </div>
+{% endblock %}

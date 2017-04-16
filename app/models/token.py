@@ -41,7 +41,8 @@ class Token:
         :return:
         """
         db = self.enigma.get_token()
-        a = db.find({'tokens': {'$elemMatch': {'token': token}}})
+        a = db.find_one({'tokens': {'$elemMatch': {'token': token}}})
+        print(a)
         return a
 
     def alter_token(self, token):

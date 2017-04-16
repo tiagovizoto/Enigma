@@ -6,10 +6,14 @@
         {% raw %}
         <br>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
+        <div class="container" >
+           <link href="https://cdn.quilljs.com/1.2.3/quill.snow.css" rel="stylesheet">
+          <script src="https://cdn.quilljs.com/1.2.3/quill.js"></script>
 
-        <div class="container" id="vaga">
+            <div id="editor">
 
-            <form class="">
+            </div>
+            <form id="vaga" class="">
               <div class="row">
                 <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('title')  }" class="col col-xl-12">
                   <label for="">Titulo</label>
@@ -46,7 +50,9 @@
               <div class="row">
                 <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('date_valid')  }" class="col col-xl-3">
                   <label for="">Data de Expiração</label>
-                  <input class="form-control" required type="date" v-model="job.date_valid" name="date_valid" value="">
+                  {% endraw %}
+                  <input class="form-control" required type="date"  v-model="job.date_valid" name="date_valid" >
+                  {% raw %}
                   <span v-show="errors.has('date_valid')" class="form-control-feedback">{{ errors.first('date_valid') }}</span>
                 </div>
                 <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('coin')  }" class="col col-xl-3">
@@ -83,33 +89,15 @@
                   <span v-show="errors.has('salary')" class="form-control-feedback">{{ errors.first('salary') }}</span>
                 </div>
               </div>
-              <div class="row">
-                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('description')  }" class="col col-xl-12">
-                  <label for="">Descrição da Vaga</label>
-                  <textarea v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('description') }"  required class="form-control" v-model="job.description" name="description" rows="8" cols="80"></textarea>
-                  <span v-show="errors.has('description')" class="form-control-feedback">{{ errors.first('description') }}</span>
-                </div>
-              </div>
-              <br><br>
-              <h3>Requisitos da Vaga</h3>
-              <div class="card">
-                    <ul  class="list-group list-group-flush" v-for="(requirement, index) in job.requirements">
-                      <li  class="list-group-item">{{requirement.requirement}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" v-on:click="removeRequirement(index)" class="btn btn-danger btn-sm" name="button">Delete</button></li>
-                    </ul>
-              </div>
-              <div class="">
-                <div class="form-group">
 
-                  <input type="text" v-model="newRequirement" placeholder="Digite o requisito" class="form-control"/>
-                  <button type="button" @click="addRequirement" class="btn btn-primary">Adicionar requisito</button>
-                </div>
-              </div>
+              <br><br>
+
               <br>
               <div class="row">
                 
                 <div class="col col-xl-12">
                   <p>
-                    <button :disabled="!fields.valid()" class="btn btn-success" @click="sendJob" type="submit">Publicar</button>
+                    <button :disabled="!fields.valid()" class="btn btn-success" @click="sendJob" type="button">Publicar</button>
                   </p>
                 </div>
               </div>
@@ -122,15 +110,21 @@
         <script src="https://unpkg.com/vue"></script>
         <script src="{{url_for('static', filename='js/vee-validate.js')}}" charset="utf-8"></script>
         <script>
-            Vue.use(VeeValidate);
+
+            Vue.use(VeeValidate)
+            var quill = new Quill('#editor', {
+              theme: 'snow'
+            });
+            console.log(quill.root.innerHTML)
             var app = new Vue({
             el: '#vaga',
             data:{
+
                 newRequirement:'',
                 job:{
                   title: '',
                   location: '',
-                  description: '',
+                  description: quill.root.innerHTML,
                   business: {
                       name:'',
                       email:'',
@@ -140,10 +134,10 @@
                       coin: '',
                       period_pay: ''
                   },
-                  date_valid:'',
+                  date_valid:'{{fim}}',
                   date_post: Date.now(),
-                  link: '',
-                  requirements:[]
+                  linkjob: '',
+
                 },
 
             },
@@ -159,16 +153,12 @@
                 },
 
                 sendJob: function(){
-
-                  axios.post('/job/add2', {job:this.job})
+                  console.log(quill.root.innerHTML)
+                  axios.post('/job/add2', {job:this.job, description:quill.root.innerHTML})
                     .then(function(response){
                     console.log('saved successfully')
 
-                    if(response.statusText=='OK'){
-                       window.location = '/job/'+response.data.id
-                    }else{
-                     alert("Falha ao publicar a vaga")
-                    }
+                   window.setTimeout(function(){ window.location = "http://127.0.0.1:5000/job/" + response.data.id; },3000);
 
 
                   }).catch(function (err) {
@@ -180,4 +170,4 @@
             });
         </script>
 
-   {% endblock %}
+   {% endblock body %}

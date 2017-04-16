@@ -1,4 +1,14 @@
         {% extends "default/base.html"%}
+        {%block dados %}
+        <title>{{resultado['job'].title}} -- EnigmaJOB</title>
+        <meta property="og:locale" content="pt_BR">
+        <meta name="description" content="{{resultado['job'].description | truncate(110, False)}}">
+        <meta name="keywords" content="mecanismo de busca de empregos, buscar vagas de emprego, oportunidades de emprego, lista de emprego, trabalho, vagas de trabaho, oportunidades de trabalho, vagas">
+        <meta property="og:title" content="{{resultado['job'].title}}">
+        <meta property="og:site_name" content="EnigmaJOB">
+        <meta property="og:description" content="{{resultado['job'].description | truncate(110, False)}}">
+        <meta property="og:type" content="website">
+        {% endblock %}
 
         {% block body %}
         <div class="container" xmlns="http://www.w3.org/1999/html">
@@ -7,7 +17,7 @@
         <div class="col col-xl-8">
                <div class="card ">
                  <div class="card-block">
-                    <h1 class="card-title">{{resultado['job'].title}} -- {{resultado['job'].business.name}}</h1>
+                    <h3>{{resultado['job'].title}} -- {{resultado['job'].business.name}}</h3>
                     <p class="card-subtitle mb-2 text-muted">
                         <span class="badge badge-default">{{resultado['job'].salary.coin}} {{resultado['job'].salary.value}}</span>
 
@@ -19,28 +29,23 @@
                         <p class="">
                             <b>Descricão:</b>
                         </p>
-                        {{resultado['job'].description}}
+                        {{resultado.description|safe}}
                         <br><br>
-                        <p><b>Requisitos:</b></p>
-                        <ul>
-                           {% for i in resultado['job']['requirements'] %}
-                            <li>{{i.requirement}}</li>
-                            {% endfor %}
-                        </ul>
+
                  </p>
-                     {% if resultado['job'].link == "" %}
+                     {% if resultado['job'].linkjob == "" %}
                     <div class="">
                         <button type="button" data-toggle="modal" data-target="#exampleModal"  class="btn btn-dark">Candidatar</button>
                     </div>
                      {% else %}
                      <div class="">
-                        <a type="button" href="{{resultado['job'].link}}" class="btn btn-dark">Candidatar</a>
+                        <a type="button" href="{{resultado['job'].linkjob}}" class="btn btn-dark">Candidatar</a>
                     </div>
                      {% endif %}
                   </div>
                 </div>
               </div>
-              <div class="col-xl-4 col">
+              <aside role="complementary" class="col-xl-4">
                 <h5 align="center">Vagas Recomendas</h5>
                 <br>
                 <a href="#"><h6>Programmer Python</h6></a>
@@ -60,7 +65,7 @@
                   <small><em>$2K - $3 / São Paulo - SP </em></small><br>
                   Curabitur et convallis sed.Curabitur et convallis sed.Curabitur et
                 </p>
-                 </div>
+                 </aside>
                </div>
               </div>
                 </div>
@@ -120,6 +125,7 @@
                 </div>
               </div>
             </div>
+
             <script>
                 $('#exampleModal').on('show.bs.modal', function (event) {
                   var button = $(event.relatedTarget)

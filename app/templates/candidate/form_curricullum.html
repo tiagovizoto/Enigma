@@ -1,118 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Vaga</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{url_for('static', filename='font/css/font-awesome.min.css')}}">
+{% extends "default/base.html"%}
+        {%block dados %}
+        <title>Cadastro gratuito de Candidatos e Empresas no  EnigmaJOB</title>
+        <meta property="og:locale" content="pt_BR">
+        <meta name="description" content="Cadastro gratuito de Candidatos e Empresas no EnigmaJob">
+        <meta name="keywords" content="mecanismo de busca de empregos, buscar vagas de emprego, oportunidades de emprego, lista de emprego, trabalho, vagas de trabaho, oportunidades de trabalho, vagas">
+        <meta property="og:title" content="Cadastro gratuito de Candidatos e Empresas no Enigmajob">
+        <meta property="og:site_name" content="EnigmaJOB">
+        <meta property="og:description" content="Cadastro gratuito de Candidatos e Empresas no EnigmaJob">
+        <meta property="og:type" content="website">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://unpkg.com/vue"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/0.9.3/vee-validate.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
-        <link href="{{url_for('static', filename='css/bootstrap-grid.css')}}" rel="stylesheet">
-        <script src="{{url_for('static', filename='js/bootstrap.js')}}" charset="utf-8"></script>
-        <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
-        <style media="screen">
+        {% endblock %}
 
-        *{
-            font-family: 'Slabo 27px', serif;
-        }
-        .card{
-          margin-bottom: 11px;
-          box-shadow: 0px 0px 3px #888888;
-        }
-        body{
-          background-color:  #f5f5f5;
-        }
-        .logo-enigma{
-          margin: -3px;
-        }
-        .navbar-nav{
-          font-weight: bold;
-        }
-        #imaginary_container{
-            margin-top:2%; /* Don't copy this */
-        }
-        .stylish-input-group .input-group-addon{
-            background: white !important;
-        }
-        .stylish-input-group .form-control{
-          border-right:0;
-          box-shadow:0 0 0;
-          border-color:#ccc;
-        }
-        .stylish-input-group button{
-            border:0;
-            background:transparent;
-        }
-        /* Sticky footer styles
-        -------------------------------------------------- */
-        html {
-          position: relative;
-          min-height: 100%;
-        }
-        body {
-          /* Margin bottom by footer height */
-          margin-bottom: 60px;
-        }
-        .footer {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          /* Set the fixed height of the footer here */
-          height: 60px;
-          line-height: 60px; /* Vertically center the text there */
-          background-color: black;
-        }
+        {% block body %}
 
-
-
-
-
-        </style>
-    </head>
-
-    <body>
-        <nav class="navbar navbar-toggleable-md navbar-inverse  bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="#">
-          <img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          <strong class="logo-enigma">nigma</strong>
-        </a>
-          <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Empresa <span class="sr-only">(current)</span></a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-             <a class="dropdown-item" href="#">Nova Vaga</a>
-             <a class="dropdown-item" href="#">Login</a>
-             <a class="dropdown-item" href="#">Premium</a>
-           </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Candidato <span class="sr-only">(current)</span></a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-             <a class="dropdown-item" href="#">Cadastro</a>
-             <a class="dropdown-item" href="#">Login</a>
-           </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sobre</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="#"></a>
-          </li>
-
-        </ul>
-
-        </div>
-
-        </nav>
 
         {% raw %}
-        <div id="curriculum" class="container">
+
+              <div id="curriculum" class="container">
+
           <br>
           <div class="row">
 
@@ -122,30 +29,36 @@
               <div class="card-block">
 
             <h3>Cadastro de Curriculo</h3>
-            <div class="form-group">
-              <label>Nome</label>
-              <input type="text" class="form-control"  v-model="newNome"><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Nome')  }">
+              <label>Nome (*)</label>
+              <input v-validate="'required|alpha_spaces'" type="text" name="Nome" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Nome') }"  v-model="newNome">
+              <span v-show="errors.has('Nome')" class="form-control-feedback">{{ errors.first('Nome') }}</span><br>
             </div>
-            <div class="form-group">
-              <label>Email</label>
-            <input type="text" class="form-control"  v-model="newemail"><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Email')  }">
+              <label>Email (*)</label>
+            <input v-validate="'required|email'" type="text" name="Email" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Email') }"  v-model="newemail">
+            <span v-show="errors.has('Email')" class="form-control-feedback">{{ errors.first('Email') }}</span><br>
             </div>
-            <div class="form-group">
-              <label>Celular</label>
-              <input type="text" class="form-control"  v-model="newcelular"><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Celular')  }">
+              <label>Celular (*)</label>
+              <input v-validate="'required|alpha_dash'" type="text" name="Celular" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Celular') }"  v-model="newcelular">
+              <span v-show="errors.has('Celular')" class="form-control-feedback">{{ errors.first('Celular') }}</span><br>
             </div>
-            <div class="form-group">
-              <label>Cidade/Estado</label>
-              <input type="text" class="form-control"  v-model="newlocalicao"><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Cidade e Estado')  }">
+              <label>Cidade/Estado (*)</label>
+              <input v-validate="'required|alpha_dash'" type="text" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Cidade e Estado') }" name="Cidade e Estado"  v-model="newlocalicao">
+              <span v-show="errors.has('Cidade e Estado')" class="form-control-feedback">{{ errors.first('Cidade e Estado') }}</span><br>
             </div>
-            <div class="form-group">
-              <label>Data de Nascimento</label>
-            <input type="date" class="form-control"  v-model="newdata_nascimento"><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('nascimento')  }">
+              <label>Data de Nascimento (*)</label>
+            <input v-validate="'required'" type="date" :class="{'form-control': true, 'form-control form-control-danger': errors.has('nascimento') }" name="nascimento"  v-model="newdata_nascimento">
+            <span v-show="errors.has('nascimento')" class="form-control-feedback">{{ errors.first('nascimento') }}</span><br>
             </div>
 
-            <div class="form-group">
-              <h5>Resumo</h5>
-              <textarea class="form-control"  v-model="newresumo"></textarea><br>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Resumo')  }">
+              <h5>Resumo (*)</h5>
+              <textarea v-validate="'required|alpha_dash'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Resumo') }" name="Resumo"  v-model="newresumo"></textarea>
+              <span v-show="errors.has('Resumo')" class="form-control-feedback">{{ errors.first('Resumo') }}</span><br>
             </div>
             <br>
             <h4>Experiência</h4>
@@ -154,52 +67,64 @@
                 <li style="font-size:20px" class="list-group-item"><strong>{{index}}</strong> -- {{i.cargo}} na {{i.empresa}} Inicio: {{i.inicio_xp}} Terminio: {{i.termino_xp}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn-danger btn btn-sm"  v-on:click="removeXP(index)" name="button">Delete</button></li>
               </ul>
             </div>
-            <div class="form-group">
-              <label for=""> Empresa</label>
-              <input type="text" v-model="newNomeEmpresa" class="form-control" name="" value="">
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Empresa')  }">
+              <label for="Empresa"> Empresa</label>
+              <input type="text" v-model="newNomeEmpresa" v-validate="'required|alpha_dash'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Empresa') }" name="Empresa" value="">
+              <span v-show="errors.has('Empresa')" class="form-control-feedback">{{ errors.first('Empresa') }}</span><br>
+            </div>
+            <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Cargo')  }">
               <label for="">Cargo</label>
-              <input type="text" class="form-control" v-model="newCargo" >
+              <input type="text" name="Cargo" v-validate="'required|alpha_dash'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Cargo') }" v-model="newCargo" >
+              <span v-show="errors.has('Cargo')" class="form-control-feedback">{{ errors.first('Cargo') }}</span><br>
+            </div>
               <div class="row">
-                <div class="col col-sm-4">
+                <div :class="{ 'form-group col col-sm-4': true, 'form-group has-danger': errors.has('Entrada')  }">
                   <label for="">Entrada</label>
-                  <input type="date" class="form-control" v-model="newDataInicioXP"   name="" value="">
+                  <input type="date" v-validate="'required'" name="Entrada" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Entrada') }" v-model="newDataInicioXP"   name="" value="">
+                  <span v-show="errors.has('Entrada')" class="form-control-feedback">{{ errors.first('Entrada') }}</span><br>
                 </div>
-                <div class="col col-sm-4">
+                <div :class="{ 'form-group col col-sm-4': true, 'form-group has-danger': errors.has('Saida')  }" >
                   <label for="">Saída</label>
-                  <input type="date" class="form-control" v-model="newDataTerminoXP" value="">
+                  <input type="date" v-validate="'required'" name="Saida" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Saida') }" v-model="newDataTerminoXP" value="">
+                  <span v-show="errors.has('Saida')" class="form-control-feedback">{{ errors.first('Saida') }}</span><br>
                 </div>
                 </div>
-                <div class="form-group">
+                <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Descricao')  }">
                   <label for="">Descrição</label>
-                  <textarea name="name"  v-model="newDescricacao" class="form-control" rows="8" cols="80"></textarea>
+                  <textarea name="Descricao"  v-model="newDescricacao" v-validate="'required|alpha_dash'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Descricao') }" rows="8" cols="80"></textarea>
+                  <span v-show="errors.has('Descricao')" class="form-control-feedback">{{ errors.first('Descricao') }}</span><br>
                 </div>
                 <button type="button" class="btn btn-dark btn-sm" v-on:click="adicionarXP" name="button">Adicionar Experiência</button>
-              </div>
-
+                <br>
+                <br>
                   <h3>Educação</h3>
                   <div class="card">
                     <ul  class="list-group list-group-flush" v-for="(edu, index) in educacao">
                       <li  class="list-group-item">{{edu.curso}} na {{edu.nome}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" v-on:click="removeEdu(index)" class="btn btn-danger btn-sm" name="button">Delete</button></li>
                     </ul>
                   </div>
-                  <div class="form-group">
+                  <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Ensino')  }">
                   <label for="">Institruição de Ensino</label>
-                  <input class="form-control" type="text" v-model="nomeEnsino" name="" value=""><br>
+                  <input v-validate="'required|alpha_spaces'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Ensino') }" type="text" v-model="nomeEnsino" name="Ensino" value="">
+                  <span v-show="errors.has('Ensino')" class="form-control-feedback">{{ errors.first('Ensino') }}</span><br>
                   </div>
-                  <div class="form-group">
+                  <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Curso')  }">
                   <label for="">Curso</label>
-                  <input class="form-control" type="text" v-model="newNomeCurso" name="" value=""><br>
+                  <input v-validate="'required|alpha_dash'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Curso') }" type="text" v-model="newNomeCurso" name="Curso" value="">
+                  <span v-show="errors.has('Curso')" class="form-control-feedback">{{ errors.first('Curso') }}</span><br>
                   </div>
-                  <div class="form-group">
+                  <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Inicio')  }">
                   <label for="">Inicio</label>
-                  <input type="date" class="form-control" v-model="newDataInicio" name="" value=""><br>
+                  <input type="date" v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('Inicio') }" v-model="newDataInicio" name="Inicio" value="">
+                  <span v-show="errors.has('Inicio')" class="form-control-feedback">{{ errors.first('Inicio') }}</span><br>
                   </div>
-                  <div class="form-group">
+                  <div :class="{ 'form-group': true, 'form-group has-danger': errors.has('Termino')  }">
                   <label for="">Termino</label>
-                  <input type="date" class="form-control" v-model="newDataTermino" name="" value=""><br>
+                  <input type="date" v-validate="'required'" :class="{'form-control': true, 'form-control form-control-danger': errors.has('') }" v-model="newDataTermino" name="Termino" value="">
+                  <span v-show="errors.has('Termino')" class="form-control-feedback">{{ errors.first('Termino') }}</span><br>
                   </div>
                   <div class="form-group">
-                  <button type="button" class="btn btn-dark btn-sm"  v-on:click="adicionaEducacao" name="button">Adicionar curso</button>
+                  <button type="button" class="btn btn-success btn-sm"  v-on:click="adicionaEducacao"  name="button" >Adicionar curso</button>
                   </div>
                   <br><br>
                   <button type="button" v-on:click="sendCurriculum" class="btn btn-success" id="button" name="button">Cadastrar Curriculo</button>
@@ -209,20 +134,15 @@
             </div>
             </div>
           </div>
-            {% endraw %}
+        {% endraw %}
         </div>
         <br>
-        <footer class="footer">
-          <div class="container">
-            <span class="text-muted">Enigma Job 2016-2017</span>
-          </div>
-        </footer>
+        <script src="{{url_for('static', filename='js/vee-validate.js')}}" charset="utf-8"></script>
+        <script type="text/javascript">
 
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-    </body>
-    <script type="text/javascript">
+
+    Vue.use(VeeValidate);
+
       var app = new Vue({
         el : '#curriculum',
         data:{
@@ -248,9 +168,14 @@
           educacao:[],
           curriculum:[]
         },
+        computed: {
+          // a computed getter
+
+        },
         methods:{
           adicionaCurriculum: function(){
-            this.curriculum.push({nome:this.newNome,
+            this.curriculum.push({
+            nome: this.newNome,
             email:this.newemail,
             celular:this.newcelular,
             localicao:this.newlocalicao,
@@ -266,19 +191,24 @@
             this.newresumo = ''
           },
           adicionaEducacao: function(){
+            if(this.nomeEnsino !== '' && this.newNomeCurso !== '' && this.newDataInicio !== ''){
             this.educacao.push({nome:this.nomeEnsino,curso:this.newNomeCurso,inicio:this.newDataInicio,termino:this.newDataTermino})
             this.nomeEnsino = ""
             this.newNomeCurso =""
             this.newDataInicio =""
             this.newDataTermino= ""
+          }
+
           },
           adicionarXP: function(){
+            if (this.newNomeEmpresa!=='' && this.newCargo !=='' && this.newDataInicioXP !=='' && this.newDataTerminoXP !==''){
             this.experiencia.push({empresa:this.newNomeEmpresa ,cargo:this.newCargo , inicio_xp:this.newDataInicioXP , termino_xp:this.newDataTerminoXP ,descricao:this.newDescricacao  })
-            this.newNomeEmpresa = ""
-            this.newCargo = ""
-            this.newDataInicioXP =""
-            this.newDataTerminoXP =""
-            this.newDescricacao =""
+            this.newNomeEmpresa = ''
+            this.newCargo = ''
+            this.newDataInicioXP =''
+            this.newDataTerminoXP =''
+            this.newDescricacao =''
+          }
           },
           removeEdu: function(index) {
             this.educacao.splice(index,1)
@@ -287,14 +217,23 @@
             this.experiencia.splice(index, 1)
           },
           sendCurriculum: function () {
-            axios.post('/adicionar_curriculum', {curriculum:this.curriculum, experiencia:this.experiencia, educacao:this.educacao})
+            if(!(this.newNome === '' || this.newemail === '' || this.newlocalicao === '' || this.newdata_nascimento ==='')){
+            axios.post('/adicionar_curriculum', {curriculum:{nome: this.newNome, email:this.newemail,celular:this.newcelular,localicao:this.newlocalicao,data_nascimento:this.newdata_nascimento,tecnologia:this.newtecnologia, resumo:this.newresumo}, experiencia:this.experiencia, educacao:this.educacao})
             .then(function(response){
               console.log('saved successfully')
+              alert("Enviado com sucesso! \n Você receberá um email com instruções para acessar sua conta.")
+              window.location.replace("http://enigmajob.xyz");
             })
+            }else{
+              alert("Campos com o (*) são obrigatorios!")
+            }
           },
 
         }
+
+
       });
 
     </script>
-</html>
+
+{% endblock %}

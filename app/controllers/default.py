@@ -12,7 +12,8 @@ def index():
     num = 0
     db = Job()
     jobs = db.list_jobs(int(0))
-    return render_template('default/list_job.html', jobs= jobs, numero= num ,pagination= 0)
+    pagination = (db.count_jobs() / 10)
+    return render_template('default/list_job.html', jobs= jobs, numero= num ,pagination=  round(pagination))
 
 
 @app.route("/contato")
@@ -48,7 +49,10 @@ def search():
 def job(id):
     db = Job()
     resultado = db.find_id(id)
-    return render_template("default/job.html",resultado=resultado)
+    if resultado:
+        return render_template("default/job.html",resultado=resultado)
+    else:
+        return page_not_found()
 
 @app.route('/logout')
 def delete_token():
@@ -83,7 +87,7 @@ def politica():
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return render_template('default/404.html'), 404
 
 

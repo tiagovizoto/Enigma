@@ -7,6 +7,8 @@ from flask import render_template,redirect,request, make_response,jsonify, Respo
 from datetime import datetime, timedelta
 from time import gmtime, strftime, mktime
 import random, os, json
+from datetime import datetime, timedelta
+from bson.json_util import dumps
 
 
 @app.route("/rh/login")
@@ -47,7 +49,7 @@ def manager_rh(token):
         return redirect('/')
     else:
         v = m_t.find_token(token)
-        vagas = m_j.find_jobs_email(v[0]['email'])
+        vagas = m_j.find_jobs_email(v['email'])
 
         resp = make_response(render_template('rh/manager_rh.html', vagas=vagas))
         if not request.cookies.get('token'):
@@ -61,7 +63,10 @@ def new_job():
     Metodo usado para rendelizar html
     :return:
     """
-    return render_template("rh/new_job.html")
+    futuro = datetime.now()
+    futuro += timedelta(days=30)
+    return render_template("rh/new_job.html", fim = futuro.strftime('%Y-%m-%d'))
+
 
 @app.route("/rh/job/<id>/delete")
 def remove_job(id):
@@ -184,9 +189,28 @@ def add_job():
     return redirect('/')
 
 
-@app.route("/job/add2", methods=['POST','GET'])
+@app.route("/rh/new/job/")
+def new_job_rh():
+    db = Rh()
+    t = Token()
+    futuro = datetime.now()
+    futuro += timedelta(days=30)
+
+    token = request.cookies.get("token")
+    if request.method == 'GET':
+        if token:
+            email = t.find_token(token)
+            if email:
+                print(email["email"])
+                profile = db.search_profile(email=email["email"])
+                if profile:
+                    return render_template("rh/new_job_rh.html", profile_my=profile, fim=futuro.strftime('%Y-%m-%d'))
+    return redirect("/rh/job/new")
+
+@app.route("/job/add2", methods=['POST'])
 def add_job2():
     data = request.get_json()
+    print(data)
     rh = Rh()
     _id = rh.new_job(data)
     print(_id)
@@ -201,8 +225,6 @@ def add_job2():
     return resp
 
 
-
-
 @app.route("/new_token", methods=['POST'])
 def new_token():
     token = Token()
@@ -212,4 +234,73 @@ def new_token():
     token.insert_token(token_text,email)
     SendToken.send_token(token_text,email)
     return redirect("/")
+
+
+@app.route("/rh/profile/", methods=['GET','POST'])
+def profile_rh():
+
+    db = Rh()
+    t = Token()
+    token = request.cookies.get("token")
+    if request.method == 'GET':
+        if token:
+            email = t.find_token(token)
+            if email:
+                print(email["email"])
+                profile = db.search_profile(email=email["email"])
+                if profile:
+                    return render_template("rh/profile_rh.html", profile_my=profile)
+                else:
+                    return render_template("rh/profile_rh.html", profile_my=None, email=email["email"])
+        else:
+            return redirect("/")
+    elif request.method == 'POST':
+        name_business = request.form['name_business']
+        location = request.form["location"]
+        name_pearson = request.form["name_pearson"]
+        description = request.form["description"]
+        website_business = request.form["website_business"]
+        email = request.form["email"]
+        data_profile = {
+            'name_pearson':name_pearson,
+            'location':location,
+            'description':description,
+            'website_business':website_business,
+            'name_business':name_business,
+            'email':email
+        }
+        db.create_profile(profile=data_profile)
+        return redirect('/rh/profile/')
+
+@app.route("/rh/profile/edit/<id>", methods=['POST','GET'])
+def edit_profile_rh(id):
+    t = Token()
+    db = Rh()
+    if request.method == 'GET':
+        token = request.cookies.get("token")
+        if token:
+            result_token = t.find_token(token)
+            profile = db.search_profile(email=result_token["email"])
+            if profile["email"] == result_token["email"]:
+                return render_template("rh/profile_rh_edit.html", profile_my = profile)
+    elif request.method == 'POST':
+        name_business = request.form['name_business']
+        location = request.form["location"]
+        name_pearson = request.form["name_pearson"]
+        description = request.form["description"]
+        website_business = request.form["website_business"]
+        email = request.form["email"]
+        data_profile = {
+            'name_pearson': name_pearson,
+            'location': location,
+            'description': description,
+            'website_business': website_business,
+            'name_business': name_business,
+            'email': email
+        }
+        db.update_profile(id,data_profile)
+        return redirect("/rh/profile/")
+
+
+
 
